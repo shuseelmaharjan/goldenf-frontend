@@ -1,0 +1,41 @@
+:root {
+    --orange: rgb(232, 179, 3);
+    --orange1: #f29200;
+    --blue: #0962c6;
+    --header-height: 120px;
+    --title-color: #000;
+    --first-color: #f29200;
+    --font-semi-bold: 600;
+    --smaller-font-size: 0.9rem;
+  }
+  /* BannerCarousel.css */
+.banner-carousel-container {
+  padding: 0!important; /* Remove any default padding */
+  margin: 0!important;
+}
+
+/* Add custom styles to reduce margin */
+.slick-slide {
+  margin: 0px; /* Adjust margin as needed */
+}
+
+.slick-list {
+  padding: 0px; /* Remove any default padding */
+}
+
+.slide-item img {
+  width: 100%;
+  height: 60vh; 
+  object-fit: cover;
+  padding: 0;
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 24px;
+  text-align: center;
+}

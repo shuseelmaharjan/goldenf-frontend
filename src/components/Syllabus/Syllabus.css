@@ -1,0 +1,19 @@
+.syllabus-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.syllabus-item {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+  padding: 1rem;
+  background: #dbeafd;
+  cursor: pointer;
+  text-align: center;
+}
+
+.syllabus-item:hover {
+  background: #b9d2f1;
+}

@@ -1,0 +1,44 @@
+/* Courses.css */
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-item {
+  text-decoration: none;
+  color: black;
+  width: calc(33.33% - 20px); /* Adjust width for responsive layout */
+  margin: 0 10px 20px; /* Add margin for spacing between items */
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-item:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-item .image-item {
+  width: 100%;
+}
+
+.card-item .image-item img {
+  width: 100%;
+}
+
+.content-item {
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .card-item {
+    width: calc(50% - 20px); /* Adjust width for smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .card-item {
+    width: calc(100% - 20px); /* Adjust width for mobile screens */
+  }
+}

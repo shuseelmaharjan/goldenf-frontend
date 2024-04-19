@@ -1,0 +1,51 @@
+.footer {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .logo-container {
+    flex: 1;
+  }
+  
+  .logo {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .tagline {
+    margin: 5px 0 0;
+    font-size: 14px;
+  }
+  
+  .nav-container {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .nav-heading {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .nav-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .copy-right-container {
+    background-color: #222;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  .copy-right {
+    margin: 0;
+    font-size: 14px;
+  }
+  

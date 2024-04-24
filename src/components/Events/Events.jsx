@@ -1,7 +1,10 @@
 import React from 'react';
-
+import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 const Events = () => {
   return (
+    <>
+    <Navbar/>
     <div style={{ marginTop: '120px' }}>
       <div className="container py-3">
         <div className="row text-center mb-3">
@@ -50,6 +53,9 @@ const Events = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
+
   );
 };
 

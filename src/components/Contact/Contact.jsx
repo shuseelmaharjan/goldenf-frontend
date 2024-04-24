@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import apiClient from '../apiClient'; // Import your axios instance
+import apiClient from '../apiClient'; 
+import AppNavbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +17,7 @@ const Contact = () => {
     phone: ''
   });
 
-  const [success, setSuccess] = useState(false); // State variable for success alert
+  const [success, setSuccess] = useState(false); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +55,9 @@ const Contact = () => {
   };
 
   return (
+    <>
+    <AppNavbar/>
+    
     <div style={{ marginTop: '120px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }} className="container py-3">
       <div className="row text-center mb-3">
         <h3>Contact</h3>
@@ -129,6 +134,9 @@ const Contact = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
+
   );
 };
 

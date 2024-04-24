@@ -5,9 +5,14 @@ import IconsCarousel from './IconsCarousel';
 import CeoMessage from './CeoMessage';
 import BlogPost from './BlogPost';
 // import BannerCarousel from './BannerCarousel';
+import AppNavbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 const HomePage = () => {
   return (
+    <>
+    <AppNavbar />
+
     <div style={{ marginTop: '120px' }}>
       {/* <BannerCarousel/> */}
       <PopularCourse/>
@@ -82,7 +87,8 @@ const HomePage = () => {
       <CeoMessage/>
       <BlogPost/>
     </div>
-
+    <Footer/>
+    </>
   );
 };
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Syllabus.css';
-
+import AppNavbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 const Syllabus = () => {
   const [syllabusItems, setSyllabusItems] = useState([]);
 
@@ -20,6 +21,8 @@ const Syllabus = () => {
   }, []);
 
   return (
+    <>
+    <AppNavbar/>
     <div style={{ marginTop: '120px', overflow: 'hidden' }}>
       <div className="container py-3">
         <div className="row text-center mb-3">
@@ -49,6 +52,8 @@ const Syllabus = () => {
         
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

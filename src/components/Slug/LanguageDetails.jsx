@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import apiClient from '../apiClient';
 import unknown from '../assets/bgg.jpg'; 
 import { Link } from 'react-router-dom';
+import AppNavbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 const CourseDetails = () => {
   const { slug } = useParams();
@@ -38,6 +40,8 @@ const CourseDetails = () => {
   }
 
   return (
+    <>
+    <AppNavbar/>
     <div style={{ marginTop: '120px', position: 'relative', textAlign: 'center' }}>
       <div
         style={{
@@ -72,6 +76,8 @@ const CourseDetails = () => {
             <div dangerouslySetInnerHTML={{ __html: course.description }}S style={{ zIndex: 1 }}/>
         </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

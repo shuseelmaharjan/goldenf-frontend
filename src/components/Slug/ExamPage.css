@@ -1,0 +1,24 @@
+.col-6 .col-12 .row .col-12 button,
+.col-6 .col-12 .row .col-6 button
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 0.5rem;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 5px 10px;
+}
+.col-6 .col-12 .row .col-12 button span,
+.col-6 .col-12 .row .col-6 button span 
+{
+    background: lightblue;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+}

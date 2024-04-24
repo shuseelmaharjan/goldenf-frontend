@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import apiClient from '../apiClient';
 import unknown from '../assets/bg.jpeg'; // Import default image
 import { Link } from 'react-router-dom';
+import AppNavbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 const CourseDetails = () => {
   const { slug } = useParams();
@@ -38,6 +40,9 @@ const CourseDetails = () => {
   }
 
   return (
+    <>
+    <AppNavbar/>
+    
     <div style={{ marginTop: '120px', position: 'relative', textAlign: 'center' }}>
       {/* Overlay */}
       <div
@@ -77,6 +82,8 @@ const CourseDetails = () => {
       </div>
 
     </div>
+    <Footer/>
+    </>
   );
 };
 

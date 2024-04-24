@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import apiClient from '../apiClient';
+import AppNavbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 const OnlineApplication = () => {
   const [formData, setFormData] = useState({
@@ -50,6 +52,8 @@ const OnlineApplication = () => {
   };
 
   return (
+    <>
+    <AppNavbar/>
     <div className='container py-3' style={{ marginTop: '120px' }}>
       <div className="row text-center py-2 text-center align-items-center" style={{ background: 'rgb(11, 117, 204)' }}>
         <h4 className='text-white'>Online Application</h4>
@@ -112,6 +116,9 @@ const OnlineApplication = () => {
           )}
         </div>
     </div>
+    <Footer/>
+    </>
+
   );
 };
 

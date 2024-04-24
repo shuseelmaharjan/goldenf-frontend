@@ -27,7 +27,7 @@ const Navbar = () => {
             <span><i className="fa-solid fa-envelope"></i> info@goldenfutureinstitute.com.np</span>
           </div>
           <div className="apply-box">
-            <Link className="applyBtn mx-2" to={'/'} style={{alignItems:'center'}} id="topbar-login-btn"><span style={{marginRight:'10px'}}>Login</span> <i className="fa-solid fa-arrow-right"></i></Link>
+            <Link className="applyBtn mx-2" to={'/login'} style={{alignItems:'center'}} id="topbar-login-btn"><span style={{marginRight:'10px'}}>Login</span> <i className="fa-solid fa-arrow-right"></i></Link>
             <Link className="applyBtn" to={'/online-application'}>Apply Online <i className="fa-solid fa-arrow-right"></i></Link>
           </div>
         </div>
@@ -80,7 +80,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav__item" id="bar-login">
-              <NavLink to="/contact" className="nav__link" onClick={closeMenuOnMobile}>
+              <NavLink to="/login" className="nav__link" onClick={closeMenuOnMobile}>
                 Login
               </NavLink>
             </li>

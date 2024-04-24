@@ -1,0 +1,144 @@
+.main{
+    width: 100%;
+    height: 100vh;
+}
+.main .sidebar{
+    width: 20%;
+    height: 100vh;
+    background: #1c273c;
+    color: #fff;
+}
+.main .wrapper{
+    width: 80%;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+.main .wrapper .topbar{
+    width: 100%;
+    height: 8vh;
+    color: #000;
+    font-weight: 500;
+    background: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 0px 20px;
+}
+
+.sidebar .container{
+    padding: 30px;
+}
+.sidebar ul li {
+    color: #fff;
+    margin: 10px 0px;
+  }
+.sidebar ul a{
+    padding: 5px 10px;
+    margin: 10px 0px;
+}
+  
+  .sidebar ul a.active {
+    background: orange;
+    text-decoration: none; 
+    color: #fff; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    display: block; 
+    width: 100%; 
+    font-size: 1rem;
+  }
+
+  .main-content {
+    width: 100%;
+    height: 92vh;
+    padding: 20px;
+    background-image: url('../assets/bg-logo.webp');
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: 20rem; 
+    opacity: 100%;
+}
+  
+  
+.topbar button{
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+}
+.topbar #togglebar{
+    display: none;
+}
+.topbar .toggle{
+    display: flex;
+    justify-content: end;
+}
+.sidebar #closeBtn button{
+    display: none;
+}
+.sidebar .row img{
+    margin: 20px 0px;
+}
+.row ul li a{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0px 10px;
+}
+.row ul li span i{
+    width: 20px!important;
+}
+.row ul li span {
+    margin-right: 10px;
+    text-align: center;
+}
+.box{
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    width: 100%;
+    border-radius: 10px;
+}
+@media only screen and (max-width: 600px) {
+    main {
+      background-color: lightblue;
+    }
+    .main .sidebar{
+        width: 80%;
+        position: absolute;
+        z-index: 999;
+        position: absolute;
+        display: none;
+        transition: left 0.3s ease-in-out;    
+    }
+    .main .topbar{
+        width: 100%;
+        
+    }
+    .main .wrapper{
+        width: 100%;
+    }
+    .topbar #togglebar{
+        display: flex;
+    }
+    .topbar .toggle{
+        display: flex;
+        justify-content: space-between;
+    }
+    .sidebar #closeBtn button{
+        display: flex;
+        background: none;
+        border: none;
+        font-size: 1.3rem;
+        color: #fff;
+    }
+    .sidebar .row{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+    }
+
+    .sidebar .row img{
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}

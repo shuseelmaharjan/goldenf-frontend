@@ -141,10 +141,10 @@ const ExamPage = () => {
   
   const handleCloseModal = () => {
     setButtonNumber(null); 
-    setCurrentModalButton(null); // Reset current modal button
-    fetchExamData(); // Refetch exam data
-    renderButtons(); // Rerender buttons for reading questions
-    renderListening(); // Rerender buttons for listening questions
+    setCurrentModalButton(null); 
+    fetchExamData(); 
+    renderButtons();
+    renderListening(); 
   };
   
   const handleButtonClick = (number) => {
@@ -315,24 +315,27 @@ const ExamPage = () => {
     <div className="col-6">
   <div className="col-12" style={{ padding: '10px' }}>
     <div className="row" style={{ border: '1px solid #ccc', padding: '10px'}}>
+    <div className="col-6">
+  <div className="col-12" style={{ padding: '10px' }}>
+    <div className="row" style={{ border: '1px solid #ccc', padding: '10px'}}>
       {questionData && (
         <>
           {questionData.answer_type === 'text' && (
             <>
-                {[1, 2, 3, 4].map((number) => (
+              {[1, 2, 3, 4].map((number) => (
                 <div key={number} className="col-12">
-                    <button
+                  <button
                     onClick={() => handleSubmitAnswers((questionData.question_number - 1) * 4 + number, String.fromCharCode(96 + number))}
                     className={`btn${questionData.question_number}-${number}`}
-                    >
+                    style={{ backgroundColor: examData[`qn${questionData.question_number}`] === String.fromCharCode(96 + number) ? 'orange' : 'blue' }}
+                  >
                     <span>{number}</span>
                     {questionData[`option${number}_text`] || 'NULL'}
-                    </button>
+                  </button>
                 </div>
-                ))}
+              ))}
             </>
-            )}
-
+          )}
 
           {questionData.answer_type === 'audio' && (
             <>
@@ -340,8 +343,9 @@ const ExamPage = () => {
                 <div key={number} className="col-12">
                   <button
                     onClick={() => handleSubmitAnswers((questionData.question_number - 1) * 4 + number, String.fromCharCode(96 + number))}
-                    className={`btn${questionData.question_number}`-{number}}
-                    >
+                    className={`btn${questionData.question_number}-${number}`}
+                    style={{ backgroundColor: examData[`qn${questionData.question_number}`] === String.fromCharCode(96 + number) ? 'orange' : 'blue' }}
+                  >
                     <span>{number}</span>
                     <audio id={`audio${number}`} src={`${apiClient.defaults.baseURL}${questionData[`option${number}_audio`] || 'NULL'}`}></audio>
                     <button onClick={() => togglePlayPause(`audio${number}`)} style={{width:'30px'}}>
@@ -359,7 +363,8 @@ const ExamPage = () => {
                 <div key={number} className={`col-6${number > 1 ? ' mt-3' : ''}`}>
                   <button
                     onClick={() => handleSubmitAnswers((questionData.question_number - 1) * 4 + number, String.fromCharCode(96 + number))}
-                    className={`btn${questionData.question_number}`-{number}}
+                    className={`btn${questionData.question_number}-${number}`}
+                    style={{ backgroundColor: examData[`qn${questionData.question_number}`] === String.fromCharCode(96 + number) ? 'orange' : 'blue' }}
                   >
                     <span>{number}</span>
                     <img src={`${apiClient.defaults.baseURL}${questionData[`option${number}_image`] || 'NULL'}`} alt="" style={{width:'100%'}} />
@@ -370,6 +375,11 @@ const ExamPage = () => {
           )}
         </>
       )}
+    </div>
+  </div>
+</div>
+
+
     </div>
   </div>
 </div>

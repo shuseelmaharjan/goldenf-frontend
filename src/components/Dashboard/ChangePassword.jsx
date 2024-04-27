@@ -11,7 +11,7 @@ const ChangePassword = () => {
         <div className="wrapper">
           <Topbar/>
           <div className="main-content">
-            <div className="container" style={{padding:'0'}}>
+            <div className="container">
                 <div className="row">
                     <h5>Change Password</h5>
                 </div>

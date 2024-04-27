@@ -12,7 +12,7 @@ const PopularCourse = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get('api/computercourses/popular/');
+        const response = await apiClient.get('/api/computercourses/popular/');
         const modifiedData = response.data.map(course => {
           return {
             ...course,

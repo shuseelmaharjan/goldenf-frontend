@@ -1,405 +1,274 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import apiClient from '../apiClient';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import './ExamPage.css';
+import Questions from './Questions';
 
 const ExamPage = () => {
   const location = useLocation();
-  const slug = location.pathname.split('/').pop(); 
-  const [username, setUsername] = useState('');
-  const [buttonNumber, setButtonNumber] = useState(null); 
-  const [currentModalButton, setCurrentModalButton] = useState(null); 
-  const [setNumber, setSetNumber] = useState(null); 
-  const [examId, setExamId] = useState(null);
-  const [questionData, setQuestionData] = useState(null); 
-  const[examData, setExamData] = useState([]);
+  const examSlug = location.pathname.split('/').pop();
+  const [examId, setExamId] = useState('');
+  const [setId, setSetId] = useState('');
+  const userId = localStorage.getItem('userId');
+  const username = localStorage.getItem('username');
+  const [examData, setExamData] = useState('');
+  const [selectedButton, setSelectedButton] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [result, setResult] = useState('');
+  const [timeLeft, setTimeLeft] = useState(60*60);
+  const [nullCount, setNullCount] = useState('');
 
-  const [isPlaying, setIsPlaying] = useState({
-    audio1: false,
-    audio2: false,
-    audio3: false,
-    audio4: false
-  });
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const minutes = Math.floor((timeLeft % 3600) / 60);
+  const seconds = timeLeft % 60;
 
-  const userId = localStorage.getItem('user_id');
-
-  
-  useEffect(() => {
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-  
-    const fetchSetNumber = async () => {
-      try {
-        const response = await apiClient.get(`api/get-set/${slug}/`);
-        setExamId(response.data.id);
-        setSetNumber(response.data.set);
-      } catch (error) {
-        console.error('Error fetching set number:', error);
-      }
-    };
-  
-    fetchSetNumber();
-  
-  }, [slug]);
-
-
-
-  const fetchExamData = async () => {
+  const fetchExamData = useCallback(async () => {
     try {
-      const response = await apiClient.get(`api/fetch-modal-data/${examId}/${userId}/`);
+      const response = await apiClient.get(`/api/fetch-modal-data/${examId}/${userId}/`);
       setExamData(response.data);
     } catch (error) {
       console.error('Error fetching exam data:', error);
     }
-  };
-  
+  }, [examId, userId]);
+
+  const submitForm = useCallback(async () => {
+    try {
+      const formData = {
+        is_active: false
+      };
+      const response = await apiClient.put(`/api/end-exam/${examId}/${userId}/`, formData);
+
+      console.log('Form submitted successfully:', response.data);
+      setIsActive(false);
+
+      const updatedResult = await apiClient.get(`/api/validate_answer/${examId}/${setId}/${userId}/`);
+      setResult(updatedResult.data);
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  }, [examId, setId, userId]);
+
+  const fetchNullCount = useCallback(async () => {
+    try {
+      const response = await apiClient.get(`/api/fetch-null-count/${userId}/${examId}/`);
+      setNullCount(response.data);
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
+  }, [examId, userId]); 
+
   useEffect(() => {
     if (examId && userId) {
-
+      fetchExamData();
     }
-  }, [examId, userId]);
-  
+  }, [examId, userId, isModalOpen, fetchExamData]);
 
   useEffect(() => {
-    const fetchQuestionData = async () => {
-      if (currentModalButton !== null) {
-        try {
-          const response = await apiClient.get(`api/fetch-question/${setNumber}/${currentModalButton}/`);
-          setQuestionData(response.data);
-        } catch (error) {
-          console.error('Error fetching question data:', error);
-        }
+    const fetchExamDetails = async () => {
+      try {
+        const response = await apiClient.get(`/api/fetch-schedule-details/${examSlug}/`);
+        setExamId(response.data.id);
+        setSetId(response.data.set_id);
+
+        const userResponse = await apiClient.get(`/api/check-exam-status/${userId}/${response.data.id}/`);
+        setIsActive(userResponse.data.is_active);
+      } catch (error) {
+        console.error('Error fetching exam details:', error);
       }
     };
 
-    fetchQuestionData();
-  }, [currentModalButton, setNumber]);
+    fetchExamDetails();
+  }, [examSlug, userId]);
 
-  const renderButtons = () => {
-    const buttons = [];
-    for (let i = 1; i <= 20; i += 5) {
-      const buttonGroup = [];
-      for (let j = i; j < i + 5; j++) {
-        const question = `qn${j}`;
-        const isActive = examData && examData[question] !== null;
-        const buttonStyle = {
-          width: '100%',
-          height: '100%',
-          backgroundColor: isActive ? 'orange' : 'blue',
-        };
-        buttonGroup.push(
-          <div key={j} className="col mt-3">
-            <button
-              className='btn btn-primary'
-              style={buttonStyle}
-              onClick={() => handleButtonClick(j)}
-            >
-              {j}
-            </button>
-          </div>
-        );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (timeLeft > 0) {
+        setTimeLeft(timeLeft - 1); 
+      } else {
+        submitForm();
       }
-      buttons.push(<div key={i} className="row">{buttonGroup}</div>);
-    }
-    return buttons;
-  };
+    }, 1000); 
   
-  const renderListening = () => {
-    const buttons = [];
-    for (let i = 21; i <= 40; i += 5) {
-      const buttonGroup = [];
-      for (let j = i; j < i + 5; j++) {
-        const question = `qn${j}`;
-        const isActive = examData && examData[question] !== null;
-        const buttonStyle = {
-          width: '100%',
-          height: '100%',
-          backgroundColor: isActive ? 'orange' : 'blue',
-        };
-        buttonGroup.push(
-          <div key={j} className="col mt-3">
-            <button
-              className='btn btn-primary'
-              style={buttonStyle}
-              onClick={() => handleButtonClick(j)}
-            >
-              {j}
-            </button>
-          </div>
-        );
-      }
-      buttons.push(<div key={i} className="row">{buttonGroup}</div>);
-    }
-    return buttons;
-  };
-  
-  
-  const handleCloseModal = () => {
-    setButtonNumber(null); 
-    setCurrentModalButton(null); 
-    fetchExamData(); 
-    renderButtons();
-    renderListening(); 
-  };
-  
-  const handleButtonClick = (number) => {
-    setButtonNumber(number); 
-    setCurrentModalButton(number); 
-  };
+    return () => clearTimeout(timer);
+  }, [timeLeft, submitForm]);
 
-  const handleNextButton = () => {
-    if (currentModalButton < 40) {
-      setCurrentModalButton(currentModalButton + 1);
-    }
+  const handleButtonClick = (buttonNumber) => {
+    setSelectedButton(buttonNumber);
   };
 
   const handlePreviousButton = () => {
-    if (currentModalButton > 1) {
-      setCurrentModalButton(currentModalButton - 1);
+    if (selectedButton > 1) {
+      setSelectedButton(selectedButton - 1);
     }
   };
 
-  function togglePlayPause(audioId) {
-    const audio = document.getElementById(audioId);
-    const allAudio = document.querySelectorAll('audio');
-    
-    allAudio.forEach((aud) => {
-      if (aud !== audio) {
-        aud.pause();
-        setIsPlaying(prevState => ({ ...prevState, [aud.id]: false }));
+  const handleCloseModal = () => {
+    setSelectedButton(null);
+    setIsModalOpen(false);
+    fetchNullCount();
+    fetchExamData(); 
+  };
+
+  const handleNextButton = () => {
+    if (selectedButton < 40) {
+      setSelectedButton(selectedButton + 1);
+    }
+  };
+
+  useEffect(() => {
+    const validateAnswer = async () => {
+      try {
+        const response = await apiClient.get(`/api/validate_answer/${examId}/${setId}/${userId}/`);
+        setResult(response.data);
+      } catch (error) {
+        console.error('Error', error);
       }
-    });
-  
-    if (audio.paused) {
-      audio.play();
-      setIsPlaying(prevState => ({ ...prevState, [audioId]: true }));
-    } else {
-      audio.pause();
-      setIsPlaying(prevState => ({ ...prevState, [audioId]: false }));
+    };
+
+    if (examId && userId && setId) {
+      validateAnswer();
     }
-  }
-  
-  function togglePlayPauseAudio() {
-    const audioElement = document.getElementById('questionAudio');
-    if (audioElement.paused) {
-      audioElement.play();
-      setIsPlayingAudio(true);
-    } else {
-      audioElement.pause();
-      setIsPlayingAudio(false);
-    }
-  }
-  
-  const handleSubmitAnswers = async (questionNumber, selectedOption) => {
-    try {
-      const userId = localStorage.getItem('user_id');
-      let data = {
-        user: userId,
-        exam: examId,
-      };
-  
-      const questionIndex = Math.ceil(questionNumber / 4); 
-      const questionKey = `qn${questionIndex}`;
-  
-      data[questionKey] = selectedOption;
-  
-      await apiClient.put(`api/modal/${examId}/${userId}/`, data);
-      console.log(`Selected option for question ${questionIndex} updated successfully.`);
-    } catch (error) {
-      console.error('Error updating selected option:', error);
-    }
-  };
-  
-  
+  }, [examId, userId, setId]);
+
   return (
-    <div>
-      <div className="container-fluid">
-        <div className="row d-flex justify-content-between align-items-center bg-primary text-white py-3 px-3">
-          <div className="col-auto">
-            <p className="mb-0">EPS | TOPIK EXAM</p>
-          </div>
-          <div className="col-auto">
-            <p className="mb-0">Username: {username}</p>
-          </div>
-        </div>
-      </div>
-      <div className="container mt-3">
-        <div className="row bg-primary d-flex justify-content-between text-white py-2">
-          <div className="col-auto">
-            Total Questions: 40 
-          </div>
-          <div className="col-auto">
-            Solved: {userId}
-          </div>
-          <div className="col-auto">
-            Unsolved: {examId}
-          </div>
-          <div className="col-auto">
-            Time Remaining:
-          </div>
-        </div>
-        <div className="row my-3">
-          <div className="col-6 px-2" >
-            <div className="col-12 py-3" style={{ border: '1px solid #ccc' }}>
-              <div className="row text-center py-2">
-                <p style={{ fontWeight: '600', color: 'blue' }}>Reading Questions</p>
-              </div>
-              <div className="row" style={{ margin: '0px 10px' }}>
-              {renderButtons()}
-              </div>
-            </div>
-          </div>
-
-          <div className="col-6 px-2" >
-            <div className="col-12 py-3" style={{ border: '1px solid #ccc' }}>
-              <div className="row text-center py-2">
-                <p style={{ fontWeight: '600', color: 'blue' }}>Listening Questions</p>
-              </div>
-              <div className="row" style={{ margin: '0px 10px' }}>
-                {renderListening()}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Modal show={buttonNumber !== null} onHide={handleCloseModal} size='xl' keyboard={false} backdrop="static" style={{ height: '100vh' }}>
-        <Modal.Header className='d-flex justify-content-between'>
-          <div className="col-auto">
-            Question Number: {currentModalButton}
-          </div>
-          <div className="col-auto">
-            Remaining Questions: 
-          </div>
-          <div className="col-auto">
-            Time Remaining: 
-          </div>
-        </Modal.Header>
-        <Modal.Body>
-  <div className="row">
-    <div className="col-6">
-      <div className="col-12" style={{ padding: '10px' }}>
-        <div className="row" style={{ border: '1px solid #ccc', padding: '10px'}}>
-          {questionData && (
-            <>
-              <div dangerouslySetInnerHTML={{ __html: questionData.label }} />
-              <p>{questionData.question_number}</p>
-
-              {questionData.question_type === 'text' && (
-                <p>{questionData.question_text}</p>
-              )}
-
-              {questionData.question_type === 'image' && (
-                <img src={`${apiClient.defaults.baseURL}${questionData.question_image.startsWith('/') ? '' : '/'}${questionData.question_image}`} alt="" />
-              )}
-
-              {questionData.question_type === 'audio' && (
-                <>
-                  <div className="col-12">
-                    <audio id="questionAudio" src={`${apiClient.defaults.baseURL}${questionData.question_audio.startsWith('/') ? '' : '/'}${questionData.question_audio}`} controls style={{display:'none'}}></audio>
-                    <button onClick={togglePlayPauseAudio}>
-                      {isPlayingAudio ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
-                    </button>
-                  </div>
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-    <div className="col-6">
-  <div className="col-12" style={{ padding: '10px' }}>
-    <div className="row" style={{ border: '1px solid #ccc', padding: '10px'}}>
-    <div className="col-6">
-  <div className="col-12" style={{ padding: '10px' }}>
-    <div className="row" style={{ border: '1px solid #ccc', padding: '10px'}}>
-      {questionData && (
+    <>
+      {isActive ? (
         <>
-          {questionData.answer_type === 'text' && (
-            <>
-              {[1, 2, 3, 4].map((number) => (
-                <div key={number} className="col-12">
-                  <button
-                    onClick={() => handleSubmitAnswers((questionData.question_number - 1) * 4 + number, String.fromCharCode(96 + number))}
-                    className={`btn${questionData.question_number}-${number}`}
-                    style={{ backgroundColor: examData[`qn${questionData.question_number}`] === String.fromCharCode(96 + number) ? 'orange' : 'blue' }}
-                  >
-                    <span>{number}</span>
-                    {questionData[`option${number}_text`] || 'NULL'}
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
+          <div className='container-fluid'>
+            <div className="row px-3 py-3 text-white" style={{ background: '#16A085' }}>
+              <div className="col-auto"><h3>EPS TOPIK Trial Exam</h3></div>
+            </div>
+          </div>
+          <div className="container my-3 mt-3">
+            <div className="row d-flex justify-content-between py-2" style={{ background: '#16A085', color: 'white' }}>
+              <div className="col-auto">
+                <strong>Total Questions: 40</strong>
+              </div>
+              <div className="col-auto">
+              <strong>Remaining Questions: {nullCount.null_counts}</strong>
+              </div>
 
-          {questionData.answer_type === 'audio' && (
-            <>
-              {[1, 2, 3, 4].map((number) => (
-                <div key={number} className="col-12">
-                  <button
-                    onClick={() => handleSubmitAnswers((questionData.question_number - 1) * 4 + number, String.fromCharCode(96 + number))}
-                    className={`btn${questionData.question_number}-${number}`}
-                    style={{ backgroundColor: examData[`qn${questionData.question_number}`] === String.fromCharCode(96 + number) ? 'orange' : 'blue' }}
-                  >
-                    <span>{number}</span>
-                    <audio id={`audio${number}`} src={`${apiClient.defaults.baseURL}${questionData[`option${number}_audio`] || 'NULL'}`}></audio>
-                    <button onClick={() => togglePlayPause(`audio${number}`)} style={{width:'30px'}}>
-                      {isPlaying[`audio${number}`] ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
-                    </button>
-                  </button>
+              <div className="col-auto">
+                <strong>Time Left: {minutes} minutes, {seconds} seconds</strong>
+              </div>
+            </div>
+          </div>
+          <div className="container py-3">
+            <div className="box">
+              <div className="row">
+                <div className="col-md-6 mt-3">
+                  <div className="row">
+                    <div className="col" style={{background:'#F5B041', textAlign:'center', alignItems:'center', marginRight:'5px' }}>
+                      <p style={{fontSize:'1.1rem', fontWeight:'600',}} className='mt-3'>Listening Questions</p>
+                    </div>
+                    <div className="button-container" style={{ border:'1px solid #ccc', padding:'5px', display:'grid', gridTemplateColumns:'repeat(5, 1fr)', gap:'10px'}}>
+                      {Array.from({ length: 20 }, (_, index) => index + 1).map((number) => (
+                        <button 
+                          key={number} 
+                          className="question-button py-2" 
+                          style={{
+                            background: examData[`qn${number}`] !== null ? '#45B39D' : 'none',
+                            border:'1px solid #99A3A4', 
+                            borderRadius:'5px'
+                          }}
+                          onClick={() => handleButtonClick(number)}
+                        >
+                          {number}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </>
-          )}
+                <div className="col-md-6 mt-3">
+                  <div className="row">
+                    <div className="col" style={{background:'#F5B041', textAlign:'center', alignItems:'center', marginLeft:'5px' }}>
+                      <p style={{fontSize:'1.1rem', fontWeight:'600'}} className='mt-3'>Reading Questions</p>
+                    </div>
+                    <div className="button-container" style={{ border:'1px solid #ccc', padding:'5px', display:'grid', gridTemplateColumns:'repeat(5, 1fr)', gap:'10px'}}>
+                      {Array.from({ length: 20 }, (_, index) => index + 21).map((number) => (
+                        <button 
+                          key={number} 
+                          className="question-button py-2" 
+                          style={{
+                            background: examData[`qn${number}`] !== null ? '#45B39D' : 'none',
+                            border:'1px solid #99A3A4', 
+                            borderRadius:'5px'
+                          }}
+                          onClick={() => handleButtonClick(number)}
+                        >
+                          {number}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row mt-3 d-flex justify-content-end">
+                <div className="col-auto">
+                  <button className='btn btn-primary' onClick={submitForm}>Submit Answers</button>
+                </div>
+              </div>
+            </div>
 
-          {questionData.answer_type === 'image' && (
-            <>
-              {[1, 2, 3, 4].map((number) => (
-                <div key={number} className={`col-6${number > 1 ? ' mt-3' : ''}`}>
-                  <button
-                    onClick={() => handleSubmitAnswers((questionData.question_number - 1) * 4 + number, String.fromCharCode(96 + number))}
-                    className={`btn${questionData.question_number}-${number}`}
-                    style={{ backgroundColor: examData[`qn${questionData.question_number}`] === String.fromCharCode(96 + number) ? 'orange' : 'blue' }}
-                  >
-                    <span>{number}</span>
-                    <img src={`${apiClient.defaults.baseURL}${questionData[`option${number}_image`] || 'NULL'}`} alt="" style={{width:'100%'}} />
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
+            <Modal show={selectedButton !== null} onHide={handleCloseModal} size='xl' keyboard={false} backdrop="static" style={{ height: '100vh' }}>
+              <Modal.Header className='d-flex justify-content-between'>
+
+                    <div className="col-auto">
+                    Question: {selectedButton}
+                    </div>
+                  <div className="col-auto">
+                  Time Left: {minutes} minutes, {seconds} seconds
+                  </div>
+              </Modal.Header>
+              <Modal.Body>
+                <Questions userId={userId} examId={examId} setId={setId} selectedButton={selectedButton}/>
+              </Modal.Body>
+              <Modal.Footer className='d-flex justify-content-between'>
+                <Button variant="primary" onClick={handlePreviousButton}>
+                  Previous
+                </Button>
+                <Button variant="primary" onClick={handleCloseModal}>
+                  Total Questions
+                </Button>
+                <Button variant="primary" onClick={handleNextButton}>
+                  Next
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+        </>
+      ) : (
+        <>
+        <div className="container-fluid py-3 d-flex justify-content-between" style={{background:'#117A65'}}>
+        <div className="col-auto" style={{color:'#fff', fontWeight:'600'}}>Golden Future Institute</div>
+        <div className="col-auto" style={{color:'#fff', fontWeight:'600'}}>
+              {username}
+            </div>
+        </div>
+        <div className="container mt-3">
+          <div className="row py-3 px-3" style={{background:'#117A65', color:'#fff'}}>
+            <div className="col-auto">
+            View Result
+            </div>
+          </div>
+          <div className="box">
+            <div className="row">
+              <div className="col-auto">
+              <span>You Scored {result.total_true_count} </span>
+              </div>
+            </div>
+            <div className="row">
+              <Link to={'/dashboard'}>Back to Dashboard</Link>
+            </div>
+          </div>
+        </div>
         </>
       )}
-    </div>
-  </div>
-</div>
-
-
-    </div>
-  </div>
-</div>
-
-  </div>
-</Modal.Body>
-
-        <Modal.Footer className='d-flex justify-content-between'>
-          <Button variant="primary" onClick={handlePreviousButton}>
-            Previous
-          </Button>
-          <Button variant="primary" onClick={handleCloseModal}>
-            Total Questions
-          </Button>
-          <Button variant="primary" onClick={handleNextButton}>
-            Next
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+    </>
   );
 }
+
 export default ExamPage;

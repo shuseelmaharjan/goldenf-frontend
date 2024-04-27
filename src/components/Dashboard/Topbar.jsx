@@ -1,4 +1,5 @@
 import React from 'react';
+import Logout from './Logout';
 
 const Topbar = () => {
   const username = localStorage.getItem('username');
@@ -16,6 +17,7 @@ const Topbar = () => {
           </div>
           <div className="col d-flex justify-content-end">
             <div className="username">{username}</div>
+            <Logout/>
           </div>
         </div>
       </div>

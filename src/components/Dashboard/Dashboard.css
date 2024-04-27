@@ -1,18 +1,22 @@
 .main{
     width: 100%;
     height: 100vh;
+    overflow-x: hidden;
 }
 .main .sidebar{
-    width: 20%;
+    width: 15%;
     height: 100vh;
     background: #1c273c;
     color: #fff;
 }
 .main .wrapper{
-    width: 80%;
+    width: 85%;
     padding: 0;
     margin: 0;
     display: block;
+    overflow-y: auto;
+    flex: 1;
+    overflow-x: hidden;
 }
 .main .wrapper .topbar{
     width: 100%;
@@ -48,9 +52,9 @@
     font-size: 1rem;
   }
 
-  .main-content {
+  .box {
     width: 100%;
-    height: 92vh;
+    min-height: 40vh;
     padding: 20px;
     background-image: url('../assets/bg-logo.webp');
     background-repeat: no-repeat;
@@ -77,6 +81,7 @@
 }
 .sidebar .row img{
     margin: 20px 0px;
+    width: 13rem;
 }
 .row ul li a{
     text-decoration: none;
@@ -91,12 +96,78 @@
     margin-right: 10px;
     text-align: center;
 }
-.box{
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+.main-content .container{
+    padding: 30px;
+}
+.main-content .container .box{
+    min-height: 70vh;
+}
+
+.col-auto a{
+    background: #138D75;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: ease-in-out 0.1s;
+}
+.col-auto a:hover{
+    background: #16A085;
+    box-shadow: none;
+    color: #fff;
+}
+#exam-attended {
+    background: #D6EAF8;
+    min-height: 10vh;
+    color: #2874A6;
+  }
+  
+  #course-selected {
+    background: #F2D7D5;
+    color: #A04000;
+  }
+  
+  #active-exams {
+    background: #D0ECE7;
+    color: #1D8348;
+  }
+  
+  #latest-score {
+    background: #E8DAEF;
+    color: #76448A;
+  }
+  
+  #dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  #dashboard .col {
     width: 100%;
     border-radius: 10px;
-}
-@media only screen and (max-width: 600px) {
+    padding: 5px 15px;
+  }
+  
+  #dashboard .col .row .col-3 span {
+    font-size: 2.5rem;
+  }
+  
+  #dashboard .col3 {
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #dashboard .col-9 {
+    text-align: left;
+    font-size: 1.5rem;
+  }
+  
+  #dashboard h6 {
+    font-size: 1.3rem;
+  }
+@media only screen and (max-width: 750px) {
     main {
       background-color: lightblue;
     }
@@ -140,5 +211,11 @@
         width: 100%;
         margin-top: 20px;
         margin-bottom: 20px;
+    }
+    #dashboard {
+        grid-template-columns: repeat(1, 1fr)!important; 
+      }
+    #dashboard .col{
+        width: 100%;
     }
 }

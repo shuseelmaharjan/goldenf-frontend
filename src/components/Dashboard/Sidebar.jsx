@@ -1,6 +1,7 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'; // Removed unused import
+import { NavLink } from 'react-router-dom'; 
 import longLogo from '../assets/goldenlogowhite.webp';
+import { HiDocumentReport } from "react-icons/hi";
 
 const Sidebar = () => {
   const toggleBtn = () => {
@@ -25,6 +26,9 @@ const Sidebar = () => {
             </li>
             <li className='mb-3'>
               <NavLink to="/exams" activeClassName="active" style={{ width: '100%' }}><span><i class="fa-solid fa-clipboard"></i></span>Exams</NavLink>
+            </li>
+            <li className='mb-3'>
+              <NavLink to="/exam/examhistory" activeClassName="active" style={{ width: '100%' }}><span><HiDocumentReport /></span>Exam Report</NavLink>
             </li>
             <li className='mb-3'>
               <NavLink to="/change-password" activeClassName="active" style={{ width: '100%' }}><span><i class="fa-solid fa-key"></i></span>Change Password</NavLink>

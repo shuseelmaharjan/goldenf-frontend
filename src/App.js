@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './components/HomePage/HomePage';
 import Courses from './components/Courses/Courses';
 import Language from './components/Language/Language';
@@ -17,9 +17,22 @@ import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import Exams from './components/Dashboard/Exams';
 import ChangePassword from './components/Dashboard/ChangePassword';
-import ExamPage from './components/Slug/ExamPage'; // Correct import for ExamPage
+import ExamPage from './components/Slug/ExamPage'; 
+import ExamHistroy from './components/Dashboard/ExamHistroy';
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const userLoggedIn = localStorage.getItem('user') !== null;
+    setLoggedIn(userLoggedIn);
+    setLoading(false); 
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
   return (
     <Router>
       <div>
@@ -35,12 +48,13 @@ function App() {
           <Route path='/events' element={<Events />} />
           <Route path='/syllabus' element={<Syllabus />} />
           <Route path='/contact' element={<Contact />} />
-          <Route path='/login' element={<Login/>}/>
+          <Route path='/login' element={<Login setLoggedIn={setLoggedIn} />} />
           <Route path='/online-application' element={<OnlineApplication />} />
-          <Route path='/dashboard' element={<Dashboard/>}/>
+          <Route path="/dashboard" element={loggedIn ? <Dashboard /> : <Navigate to="/login"/>} />
           <Route path='/exams' element={<Exams/>}/>
           <Route path='/change-password' element={<ChangePassword/>}/>
-          <Route path="/exam/:slug" element={<ExamPage />} /> {/* Corrected route for ExamPage */}
+          <Route path="/exam/:slug" element={<ExamPage />} /> 
+          <Route path="/exam/examhistory" element={<ExamHistroy />} /> 
           <Route path="*" element={<NotFound />} /> 
         </Routes>
       </div>

@@ -15,7 +15,7 @@ const CourseDetails = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await apiClient.get(`api/courses/${slug}/`);
+        const response = await apiClient.get(`/api/courses/${slug}/`);
         setCourse(response.data);
       } catch (error) {
         setError(error.message);

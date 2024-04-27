@@ -38,7 +38,7 @@ const OnlineApplication = () => {
 
     try {
       setLoading(true); 
-      const response = await apiClient.post('api/custom-users/', postData);
+      const response = await apiClient.post('/api/custom-users/', postData);
       setSuccessMessage('Form submitted successfully');
       setErrorMessage(''); 
       console.log('Form submitted successfully', response.data);

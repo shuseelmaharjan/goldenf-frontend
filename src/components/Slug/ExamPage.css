@@ -1,24 +1,25 @@
-.col-6 .col-12 .row .col-12 button,
-.col-6 .col-12 .row .col-6 button
-{
+.audio-wrapper {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 0.5rem;
-    border: none;
+    height: 100%;
+  }
+  
+  .play-pause-button {
+    border: 1px solid #ccc!important;
+    background: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .btn-answer {
     width: 100%;
     text-align: left;
-    padding: 5px 10px;
-}
-.col-6 .col-12 .row .col-12 button span,
-.col-6 .col-12 .row .col-6 button span 
-{
-    background: lightblue;
-    border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.5rem;
-}
+    border: 1px solid #ccc;
+    background: #D6EAF8;
+    height: auto;
+    padding: 10px 15px;
+  }
+  

@@ -13,7 +13,7 @@ const Courses = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get('api/computercourses/');
+        const response = await apiClient.get('/api/computercourses/');
         const modifiedData = response.data.map(course => {
           const slug = slugify(course.title, { lower: true });
           return {

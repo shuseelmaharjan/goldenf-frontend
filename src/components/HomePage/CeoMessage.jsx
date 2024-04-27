@@ -16,7 +16,7 @@ const CeoMessage = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const response = await apiClient.get('api/testimonial-list/');
+      const response = await apiClient.get('/api/testimonial-list/');
       const modifiedTestimonialData = response.data.map(testimonial => ({
         ...testimonial,
         image: testimonial.image ? `${apiClient.defaults.baseURL}${testimonial.image}` : null

@@ -1,41 +1,36 @@
 :root {
-    --orange: rgb(232, 179, 3);
-    --orange1: #f29200;
-    --blue: #0962c6;
-    --header-height: 120px;
-    --title-color: #000;
-    --first-color: #f29200;
-    --font-semi-bold: 600;
-    --smaller-font-size: 0.9rem;
-  }
-  /* BannerCarousel.css */
-.banner-carousel-container {
-  padding: 0!important; /* Remove any default padding */
-  margin: 0!important;
+  --orange: rgb(232, 179, 3);
+  --orange1: #f29200;
+  --blue: #0962c6;
+  --header-height: 120px;
+  --title-color: #000;
+  --first-color: #f29200;
+  --font-semi-bold: 600;
+  --smaller-font-size: 0.9rem;
 }
 
-/* Add custom styles to reduce margin */
-.slick-slide {
-  margin: 0px; /* Adjust margin as needed */
+.carousel-item {
+  position: relative;
 }
 
-.slick-list {
-  padding: 0px; /* Remove any default padding */
+.carousel-caption{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+  
 }
-
-.slide-item img {
+.carousel-image {
   width: 100%;
-  height: 60vh; 
+  height: 50vh;
   object-fit: cover;
-  padding: 0;
 }
 
-.overlay-text {
+.overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-size: 24px;
-  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); 
 }

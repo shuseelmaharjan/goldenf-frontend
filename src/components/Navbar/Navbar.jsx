@@ -23,8 +23,9 @@ const Navbar = () => {
       <div className="topbar">
         <div className="container d-flex justify-content-between">
           <div className="content">
-            <span><i className="fa-solid fa-phone"></i> 01-5108166</span>
-            <span><i className="fa-solid fa-envelope"></i> info@goldenfutureinstitute.com.np</span>
+            <span><i className="fa-solid fa-phone"></i> <a href="tel:+977-01-5108166" style={{ textDecoration: 'none', color: '#fff'}}>01-5108166</a>,
+                   <a href="tel:+977-9813940696" style={{ textDecoration: 'none', color: '#fff', marginLeft:'5px'}}>9813940696</a></span>
+            <span><i className="fa-solid fa-envelope"></i> <a href="mailto:goldenfutureinstitute1@gmail.com" style={{ textDecoration: 'none', color: '#fff'}}>goldenfutureinstitute1@gmail.com</a></span>
           </div>
           <div className="apply-box">
             <Link className="applyBtn mx-2" to={'/login'} style={{alignItems:'center'}} id="topbar-login-btn"><span style={{marginRight:'10px'}}>Login</span> <i className="fa-solid fa-arrow-right"></i></Link>

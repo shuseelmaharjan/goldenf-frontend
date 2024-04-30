@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Login.css';
+import './LoginUser.css';
 import logo from '../assets/goldenlogoblack.webp';
 import apiClient from '../apiClient';
 
-const Login = ({ setLoggedIn }) => {
+const LoginUser = ({ setLoggedIn }) => {
   const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     username: '',
@@ -38,13 +38,12 @@ const Login = ({ setLoggedIn }) => {
     e.preventDefault();
   
     try {
-      const response = await apiClient.post('/user-auth/api/login/', formData);
+      const response = await apiClient.post('/auth/api/login/', formData);
       if (response.status === 200) {
         console.log('Login successful');
-        const { token, username, id } = response.data; 
+        const { token, username } = response.data; 
         localStorage.setItem('token', token);
         localStorage.setItem('username', username); 
-        localStorage.setItem('userId', id); 
   
         setLoggedIn(true);
         navigate('/dashboard');
@@ -57,7 +56,6 @@ const Login = ({ setLoggedIn }) => {
     }
   };
   
-
   return (
     <div className="login">
       <div className="wrapper">
@@ -118,4 +116,4 @@ const Login = ({ setLoggedIn }) => {
   );
 };
 
-export default Login;
+export default LoginUser;

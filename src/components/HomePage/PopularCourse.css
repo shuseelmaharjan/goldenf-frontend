@@ -1,41 +1,17 @@
-.wrapper {
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20;
+.popular-course-card {
+  transition: box-shadow 0.3s ease;
 }
+
+.popular-course-card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
 .card-item {
   border: 1px solid #ccc;
-  margin-bottom: 20px; 
+  transition: box-shadow 0.3s ease;
 }
 
-
-.card-item .image-item {
-  margin-bottom: 10px;
-}
-
-.card-item .image-item img {
-  height: 200px;
-  object-fit: cover;
-}
-
-.content-item h5 {
-  text-align: center;
-}
-
-.content-item p {
-  text-align: left;
-}
-
-.wrapper a,
-.content a {
-  text-decoration: none;
-  color: black;
-  transition: box-shadow 0.3s ease; 
-  border-radius: 10px;
-}
-
-.wrapper a:hover,
-.content a:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+.card-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

@@ -167,6 +167,26 @@
   #dashboard h6 {
     font-size: 1.3rem;
   }
+
+  .navbar {
+    background-color: #fefefe;
+    color: #333;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    height: 60px!important;
+}
+.navbar button{
+    border: none;
+    background: none; 
+}
+.logoutBtn{
+    border: none;
+    color: red!important;
+}
+.logoutBtn:hover{
+    background: none!important ;
+}
 @media only screen and (max-width: 750px) {
     main {
       background-color: lightblue;

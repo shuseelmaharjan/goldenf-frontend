@@ -1,5 +1,6 @@
 import React from 'react';
-import Logout from './Logout';
+import Logout from './LogOut';
+import './Dashboard.css';
 
 const Topbar = () => {
   const username = localStorage.getItem('username');

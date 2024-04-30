@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; 
-import '../HomePage/PopularCourse.css';
 import apiClient from '../apiClient';
 import unknown from '../assets/unknown-banner.jpg';
 import slugify from 'slugify';
@@ -33,32 +32,41 @@ const Language = () => {
 
   return (
     <>
-    <AppNavbar/>
-    <div style={{ marginTop: '120px' }}>
-      <div className="container py-3">
-        <div className="row text-center mb-3">
-          <h3>Language Classes</h3>
-          <div className="underline" style={{ width: '50px', height: '5px', margin: '0 auto', backgroundColor: '#f29200' }}></div>
-        </div>
-        <div className="wrapper">
-          {courses.map((course, index) => (
-            <Link key={index} to={`/languages/${slugify(course.title, { lower: true })}`} className="card-item mb-3 mx-2"> 
-              <div className="image-item">
-                <img className='card-img-top' src={course.image || unknown} alt={course.title} style={{height:'250px!important'}}/>
+      <AppNavbar/>
+      <div style={{ marginTop: '120px' }}>
+        <div className="container py-3">
+          <div className="row text-center mb-3">
+            <h3>Language Classes</h3>
+            <div className="underline" style={{ width: '50px', height: '5px', margin: '0 auto', backgroundColor: '#f29200' }}></div>
+          </div>
+          <div className="row justify-content-center">
+            {courses.map((course, index) => (
+              <div key={index} className="col-md-4 mb-3">
+                <Link 
+                  to={`/languages/${slugify(course.title, { lower: true })}`} 
+                  className="card-item" 
+                  style={{ textDecoration: 'none', color: '#000', border: '1px solid #ccc', display: 'block', borderRadius: '10px' }}
+                >
+                  <div className="image-item">
+                    <img 
+                      className="card-img-top" 
+                      src={course.image || unknown} 
+                      alt={course.title} 
+                      style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} 
+                    />
+                  </div>
+                  <div className="content-item px-2 mt-3">
+                    <h5 className='text-center'>{course.title}</h5>
+                  </div>
+                </Link>
               </div>
-              <div className="content-item px-2 mt-3">
-                <h5>{course.title}</h5>
-              </div>
-            </Link>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer/>
     </>
-    
-
-  )
+  );
 }
 
 export default Language;

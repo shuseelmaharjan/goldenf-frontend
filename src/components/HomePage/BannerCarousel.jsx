@@ -1,44 +1,44 @@
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import banner1 from '../assets/images/banner1.jpg';
-import banner2 from '../assets/images/banner2.jpg';
-import banner3 from '../assets/images/banner3.jpg';
-import './BannerCarousel.css'; 
+import React, { useState, useEffect } from 'react';
+import Carousel from 'react-bootstrap/Carousel';
+import apiClient from '../apiClient';
+import './BannerCarousel.css';
 
-const BannerCarousel = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false, 
-    adaptiveHeight: true,
-    centerPadding: '0px', // Add center padding
-  };
-  
+function BannerCarousel() {
+  const [banners, setBanners] = useState([]);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await apiClient.get('/api/all-banners/');
+        if (response.status === 200) {
+          setBanners(response.data);
+        } else {
+          throw new Error('Failed to fetch banners');
+        }
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      }
+    };
+
+    fetchBanners();
+  }, []);
 
   return (
-    <div className="banner-carousel-container"> {/* Add a container div */}
-      <Slider {...settings}>
-        <div className="slide-item">
-          <img src={banner1} alt="Banner 1" />
-          <div className="overlay-text">Your Overlay Text Here</div>
-        </div>
-        <div className="slide-item">
-          <img src={banner2} alt="Banner 2" />
-          <div className="overlay-text">Your Overlay Text Here</div>
-        </div>
-        <div className="slide-item">
-          <img src={banner3} alt="Banner 3" />
-          <div className="overlay-text">Your Overlay Text Here</div>
-        </div>
-      </Slider>
-    </div>
+    <Carousel fade interval={5000} pause={false}>
+      {banners.map((banner, index) => (
+        <Carousel.Item key={index}>
+          <img src={banner.image} alt={`Banner ${index}`} className="carousel-image" />
+          <div className="overlay"></div>
+          <Carousel.Caption>
+            <div className="row d-block">
+              <h3>{banner.title ? banner.title : `Welcome to Golden Future Institute`}<br /></h3>
+              <p>{banner.caption ? banner.caption : ``}<br /></p>
+            </div>
+          </Carousel.Caption>
+        </Carousel.Item>
+      ))}
+    </Carousel>
   );
-};
+}
 
 export default BannerCarousel;

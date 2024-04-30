@@ -62,8 +62,8 @@ const PopularCourse = () => {
           {courses.map((course, index) => (
             <div key={index} className="card-item mb-3">
               <Link to={`/courses/${course.slug}`} className="link" style={{ textDecoration: 'none', color: '#000' }}>
-                <div className="image-item">
-                  <img src={course.image || unknown} alt={course.title} style={{width:'100%'}}/>
+                <div className="image-item" style={{ height: '180px', overflow: 'hidden' }}>
+                  <img src={course.image || unknown} alt={course.title} style={{ width:'100%', height: '100%', objectFit: 'cover' }}/>
                 </div>
                 <div className="content-item px-2 mt-3">
                   <h5 className='text-center'>{course.title}</h5>

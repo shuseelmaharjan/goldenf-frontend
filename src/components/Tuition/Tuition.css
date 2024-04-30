@@ -1,0 +1,13 @@
+.tuition-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    transition: max-height 1s ease-out;
+    max-height: 150px; /* Set initial max-height */
+    overflow: hidden; /* Hide content when collapsed */
+  }
+  
+  .tuition-card.expanded {
+    max-height: 1000px; /* Set max-height to accommodate expanded content */
+  }
+  

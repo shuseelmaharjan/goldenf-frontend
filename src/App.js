@@ -13,12 +13,16 @@ import PopularCourse from './components/HomePage/PopularCourse';
 import CourseDetails from './components/Slug/CourseDetails';
 import LanguageDetails from './components/Slug/LanguageDetails';
 import NotFound from './NotFound/NotFound';
-import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import Exams from './components/Dashboard/Exams';
 import ChangePassword from './components/Dashboard/ChangePassword';
 import ExamPage from './components/Slug/ExamPage'; 
 import ExamHistroy from './components/Dashboard/ExamHistroy';
+import LoginUser from './components/Login/LoginUser';
+import AboutInstitute from './components/HomePage/AboutInstitute';
+import SyllabusDetails from './components/Slug/SyllabusDetails';
+import EventDetails from './components/Slug/EventDetails';
+import Downloads from './components/HomePage/Downloads';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -33,6 +37,7 @@ function App() {
   if (loading) {
     return <div>Loading...</div>; 
   }
+  
   return (
     <Router>
       <div>
@@ -47,14 +52,18 @@ function App() {
           <Route path='/bridgecourse' element={<BridgeCourse />} />
           <Route path='/events' element={<Events />} />
           <Route path='/syllabus' element={<Syllabus />} />
+          <Route path='/syllabus/:slug' element={<SyllabusDetails />} />
+          <Route path='/events/:slug' element={<EventDetails />} />
           <Route path='/contact' element={<Contact />} />
-          <Route path='/login' element={<Login setLoggedIn={setLoggedIn} />} />
+          <Route path='/downloads' element={<Downloads />} />
+          <Route path='/about-us' element={<AboutInstitute />} />
+          <Route path="/login" element={<LoginUser setLoggedIn={setLoggedIn} />} />
           <Route path='/online-application' element={<OnlineApplication />} />
           <Route path="/dashboard" element={loggedIn ? <Dashboard /> : <Navigate to="/login"/>} />
-          <Route path='/exams' element={<Exams/>}/>
-          <Route path='/change-password' element={<ChangePassword/>}/>
-          <Route path="/exam/:slug" element={<ExamPage />} /> 
-          <Route path="/exam/examhistory" element={<ExamHistroy />} /> 
+          <Route path='/exams' element={loggedIn ? <Exams /> : <Navigate to="/login"/>}/>
+          <Route path='/change-password' element={loggedIn ? <ChangePassword /> : <Navigate to="/login"/>}/>
+          <Route path="/exam/:slug" element={loggedIn ? <ExamPage /> : <Navigate to="/login"/>} /> 
+          <Route path="/exam/examhistory" element={loggedIn ? <ExamHistroy /> : <Navigate to="/login"/>} /> 
           <Route path="*" element={<NotFound />} /> 
         </Routes>
       </div>

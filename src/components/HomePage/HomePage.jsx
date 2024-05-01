@@ -8,6 +8,7 @@ import AppNavbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import LearnExcellancy from './LearnExcellancy';
 import BannerCarousel from './BannerCarousel';
+import Testimonials from './Testimonials';
 
 const HomePage = () => {
   return (
@@ -21,6 +22,7 @@ const HomePage = () => {
       <ComputerCourse/>
       <IconsCarousel/>
       <CeoMessage/>
+      <Testimonials/>
       <BlogPost/>
     </div>
     <Footer/>

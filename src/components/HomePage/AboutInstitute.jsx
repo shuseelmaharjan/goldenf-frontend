@@ -3,6 +3,7 @@ import AppNavbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 
 const AboutInstitute = () => {
+  window.scrollTo(0, 0); 
   return (
     <>
     <AppNavbar/>

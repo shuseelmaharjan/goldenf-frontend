@@ -9,6 +9,7 @@ import Footer from '../Footer/Footer';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   useEffect(() => {
@@ -24,13 +25,27 @@ const Courses = () => {
           };
         });
         setCourses(modifiedData);
+        setLoading(false); 
       } catch(error) {
         console.error('Error fetching data', error);
       }
     };
   
     fetchData();
+    window.scrollTo(0, 0); 
   }, []);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar/>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+          <h2>Loading...</h2>
+        </div>
+        <Footer/>
+      </>
+    );
+  }
 
   return (
     <>

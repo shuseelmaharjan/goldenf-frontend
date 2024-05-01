@@ -8,6 +8,7 @@ import Footer from '../Footer/Footer';
 
 const Language = () => {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,13 +23,28 @@ const Language = () => {
           };
         });
         setCourses(modifiedData);
+        setLoading(false); 
       } catch(error) {
         console.error('Error fetching data', error);
       }
     };
   
     fetchData();
+    window.scrollTo(0, 0); 
   }, []);
+
+  if (loading) {
+    return (
+      <>
+        <AppNavbar/>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+          <h2>Loading...</h2>
+        </div>
+        <Footer/>
+      </>
+    );
+  }
+  
 
   return (
     <>

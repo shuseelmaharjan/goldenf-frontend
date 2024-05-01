@@ -9,6 +9,7 @@ const Tuition = () => {
   const [showDescription, setShowDescription] = useState({});
   const [tuitionData, setTuitionData] = useState([]);
   const [adData, setAdData] = useState([]);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +21,7 @@ const Tuition = () => {
           initialShowDescriptionState[item.id] = false;
         });
         setShowDescription(initialShowDescriptionState);
+        setLoading(false); 
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -46,8 +48,20 @@ const Tuition = () => {
     };
 
     fetchData();
+    window.scrollTo(0, 0); 
   }, []);
 
+  if (loading) {
+    return (
+      <>
+        <AppNavbar/>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+          <h2>Loading...</h2>
+        </div>
+        <Footer/>
+      </>
+    );
+  }
   return (
     <>
       <AppNavbar />

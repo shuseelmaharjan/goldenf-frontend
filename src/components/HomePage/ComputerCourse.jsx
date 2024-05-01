@@ -9,6 +9,7 @@ import Slider from "react-slick";
 
 const PopularCourse = () => {
   const [courses, setCourses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,12 +22,16 @@ const PopularCourse = () => {
           };
         });
         setCourses(modifiedData);
+        setIsLoading(false);
+        window.scrollTo(0, 0); // Scroll to the top when data is loaded
       } catch(error) {
         console.error('Error fetching data', error);
+        setIsLoading(false);
       }
     };
   
     fetchData();
+    
   }, []);
 
   var settings = {
@@ -57,23 +62,31 @@ const PopularCourse = () => {
         <div className="underline" style={{ width: '50px', height: '5px', margin: '0 auto', backgroundColor: '#f29200' }}></div>
       </div>
 
-      <div className="slider-container" style={{ overflow: 'hidden' }}>
-        <Slider {...settings}>
-          {courses.map((course, index) => (
-            <div key={index} className="card-item mb-3">
-              <Link to={`/courses/${course.slug}`} className="link" style={{ textDecoration: 'none', color: '#000' }}>
-                <div className="image-item" style={{ height: '180px', overflow: 'hidden' }}>
-                  <img src={course.image || unknown} alt={course.title} style={{ width:'100%', height: '100%', objectFit: 'cover' }}/>
-                </div>
-                <div className="content-item px-2 mt-3">
-                  <h5 className='text-center'>{course.title}</h5>
-                  <p><b><i className="fa-regular fa-clock"></i> Duration: </b>{course.duration}</p>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </Slider>
-      </div>
+      {isLoading ? (
+        <div className="preloader">
+          <div className="preloader-item" style={{ background: '#ddd', height: '180px' }}></div>
+          <div className="preloader-item" style={{ background: '#3e3e3e', height: '60px' }}></div>
+          <div className="preloader-item" style={{ background: '#3e3e3e', height: '60px' }}></div>
+        </div>
+      ) : (
+        <div className="slider-container" style={{ overflow: 'hidden' }}>
+          <Slider {...settings}>
+            {courses.map((course, index) => (
+              <div key={index} className="card-item mb-3">
+                <Link to={`/courses/${course.slug}`} className="link" style={{ textDecoration: 'none', color: '#000' }}>
+                  <div className="image-item" style={{ height: '180px', overflow: 'hidden' }}>
+                    <img src={course.image || unknown} alt={course.title} style={{ width:'100%', height: '100%', objectFit: 'cover' }}/>
+                  </div>
+                  <div className="content-item px-2 mt-3">
+                    <h5 className='text-center'>{course.title}</h5>
+                    <p><b><i className="fa-regular fa-clock"></i> Duration: </b>{course.duration}</p>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      )}
     </div>
   );
 }

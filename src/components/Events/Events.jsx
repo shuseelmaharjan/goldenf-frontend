@@ -21,6 +21,7 @@ const Events = () => {
     };
 
     fetchEvents();
+    window.scrollTo(0, 0); 
   }, []);
 
   const formatDate = (dateString) => {
@@ -29,8 +30,17 @@ const Events = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <Navbar/>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+          <h2>Loading...</h2>
+        </div>
+        <Footer/>
+      </>
+    );
   }
+
 
   return (
     <>
@@ -68,4 +78,5 @@ const Events = () => {
     </>
   );
 };
+
 export default Events;

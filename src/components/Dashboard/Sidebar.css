@@ -1,0 +1,43 @@
+.sidebar {
+    background-color: #292b2c;
+    color: #ffffff;
+    height: 100%;
+    padding: 20px;
+  }
+  
+  .close-btn {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  
+  .logo {
+    width: 100px;
+  }
+  
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar-menu li {
+    margin-bottom: 15px;
+  }
+  
+  .sidebar-menu a {
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar-menu a.active {
+    font-weight: bold;
+    color: #ffc107;
+  }
+  
+  .sidebar-menu a i {
+    margin-right: 10px;
+  }
+  

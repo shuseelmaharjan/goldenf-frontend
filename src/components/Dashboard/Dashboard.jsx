@@ -10,63 +10,53 @@ import apiClient from '../apiClient';
 
 const Dashboard = () => {
   const [examAttend, setExamAttend] = useState('');
-  const userId = localStorage.getItem('userId');
   const [selectedCourse, setSelectedCourse] = useState('');
   const [activeExams, setActiveExams] = useState('');
   const [dueFee, setDueFee] = useState('');
- 
+  const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get(`api/count-modal-rows/${userId}/`);
-        setExamAttend(response.data.modal_count);
+        const response = await apiClient.get(`/user-auth/user/`);
+        setUsername(response.data.username);
+        setUserId(response.data.user_id);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching user details:', error);
       }
     };
 
     fetchData();
 
+    const fetchDashboardData = async () => {
+      try {
+        const response1 = await apiClient.get(`api/count-modal-rows/${userId}/`);
+        setExamAttend(response1.data.modal_count);
 
-    const userSelectedCourse = async() =>{
-      try{
-        const courses = await apiClient.get(`/api/count-user-courses/${userId}/`);
-        setSelectedCourse(courses.data.user_count);
-      }catch(error){
-        console.error('Error', error);
+        const response2 = await apiClient.get(`/api/count-user-courses/${userId}/`);
+        setSelectedCourse(response2.data.user_count);
+
+        const response3 = await apiClient.get(`/api/count-ongoing-exams/`);
+        setActiveExams(response3.data.ongoing_count);
+
+        const response4 = await apiClient.get(`/api/only-due/${userId}/`);
+        setDueFee(response4.data.due_amount);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
       }
     };
-    userSelectedCourse();
 
-    const ongoingExams = async() =>{
-      try{
-        const examActive = await apiClient.get(`/api/count-ongoing-exams/`);
-        setActiveExams(examActive.data.ongoing_count);
-      }catch(error){
-        console.error('Error', error);
-      }
-    };
-    ongoingExams();
-
-    const dueFees =async() =>{
-      try{
-        const dueResponse = await apiClient.get(`/api/only-due/${userId}/`);
-        setDueFee(dueResponse.data.due_amount);
-      }catch(error){
-        console.error('error', error);
-
-      }
-    };
-    dueFees();
-
+    if (userId) {
+      fetchDashboardData();
+    }
   }, [userId]);
-
 
   return (
     <div className='main d-flex' style={{ width: '100%', height: '100vh' }}>
       <Sidebar />
       <div className="wrapper">
-        <Topbar />
+        <Topbar username={username} />
         <div className="main-content">
           <div className="container">
             <div className="row">

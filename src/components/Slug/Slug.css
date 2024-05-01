@@ -1,0 +1,34 @@
+.container .breadcrumb{
+    top: 3rem;
+    left: 7rem;
+    color: #fff;
+    position: absolute;
+    text-align: center;
+}
+.container .breadcrumb a{
+    text-decoration: none;
+    color: #fff;
+    margin: 0px 5px;
+}
+
+@media only screen and (max-width: 600px) {
+    .container .breadcrumb{
+        left: 1rem;
+    }
+}
+
+@media only screen and (min-width: 1525px) {
+    .container .breadcrumb{
+        left: 10rem;
+    }
+  }
+  @media only screen and (min-width: 1750px) {
+    .container .breadcrumb{
+        left: 15rem;
+    }
+  }
+  @media only screen and (min-width: 2000px) {
+    .container .breadcrumb{
+        left: 20rem;
+    }
+  }

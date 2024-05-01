@@ -1,0 +1,21 @@
+.preloader img {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .preloader img.blink {
+    animation: blink-animation 1s infinite;
+  }
+  
+  @keyframes blink-animation {
+    0% {
+      opacity: 0; 
+    }
+    50% {
+      opacity: 1; 
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  

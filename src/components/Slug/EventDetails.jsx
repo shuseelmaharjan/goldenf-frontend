@@ -7,7 +7,7 @@ import Footer from '../Footer/Footer';
 const EventDetails = () => {
     const { slug } = useParams();
     const [event, setEvent] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); 
+    const [loading, setIsLoading] = useState(true); 
     const [error, setError] = useState(null);
     const [adData, setAdData] = useState([]);
 
@@ -24,6 +24,7 @@ const EventDetails = () => {
         };
 
         fetchEvent();
+        window.scrollTo(0, 0); 
     }, [slug]);
 
     useEffect(() => {
@@ -39,13 +40,17 @@ const EventDetails = () => {
         fetchData();
     }, []); 
 
-    if (isLoading) { 
+    if (loading) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <h2>Loading...</h2>
+          <>
+            <AppNavbar/>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+              <h2>Loading...</h2>
             </div>
+            <Footer/>
+          </>
         );
-    }
+      }
 
     if (error) {
         return <div>Error: {error}</div>;

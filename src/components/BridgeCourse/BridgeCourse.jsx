@@ -9,6 +9,7 @@ const BridgeCourse = () => {
   const [showDescription, setShowDescription] = useState({});
   const [bridgeCourseData, setBridgeCourseData] = useState([]);
   const [adData, setAdData] = useState([]);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,12 +21,14 @@ const BridgeCourse = () => {
           initialShowDescriptionState[item.id] = false;
         });
         setShowDescription(initialShowDescriptionState);
+        setLoading(false); 
       } catch (error) {
         console.error('Error fetching data', error);
       }
     };
 
     fetchData();
+    window.scrollTo(0, 0); 
   }, []);
 
   const toggleDescription = id => {
@@ -48,6 +51,18 @@ const BridgeCourse = () => {
     fetchData();
   }, []);
 
+  if (loading) {
+    return (
+      <>
+        <AppNavbar />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+          <h2>Loading...</h2>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <AppNavbar />
@@ -67,43 +82,43 @@ const BridgeCourse = () => {
           </div>
           <div className="row">
             <div className="col-lg-9">
-            {bridgeCourseData.map(course => (
-              <div key={course.id} className="mb-3">
-                <div
-                  className={`shadow bridge-course-card ${
-                    showDescription[course.id] ? 'expanded' : ''
-                  }`}
-                >
+              {bridgeCourseData.map(course => (
+                <div key={course.id} className="mb-3">
                   <div
-                    className="row d-flex justify-content-between align-items-center"
-                    onClick={() => toggleDescription(course.id)}
-                    style={{ cursor: 'pointer' }}
+                    className={`shadow bridge-course-card ${
+                      showDescription[course.id] ? 'expanded' : ''
+                    }`}
                   >
-                    <div className="col-auto">
-                      <h4>{course.title}</h4>
-                    </div>
-                    <div className="col-auto">
-                      <i
-                        className={`fa-solid fa-arrow-${
-                          showDescription[course.id] ? 'down' : 'up'
-                        }`}
-                      ></i>
-                    </div>
-                  </div>
-                  {showDescription[course.id] && (
-                    <div className="row mt-3">
-                      <div className="col">
-                        <p dangerouslySetInnerHTML={{ __html: course.description }}></p>
+                    <div
+                      className="row d-flex justify-content-between align-items-center"
+                      onClick={() => toggleDescription(course.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className="col-auto">
+                        <h4>{course.title}</h4>
+                      </div>
+                      <div className="col-auto">
+                        <i
+                          className={`fa-solid fa-arrow-${
+                            showDescription[course.id] ? 'down' : 'up'
+                          }`}
+                        ></i>
                       </div>
                     </div>
-                  )}
+                    {showDescription[course.id] && (
+                      <div className="row mt-3">
+                        <div className="col">
+                          <p dangerouslySetInnerHTML={{ __html: course.description }}></p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
             </div>
 
             <div className="col-lg-3">
-            {adData.map((item, index) => (
+              {adData.map((item, index) => (
                 <div key={index} className="row mb-3">
                   <Link to={item.link}>
                     <img src={`${apiClient.defaults.baseURL}${item.image}`} alt={item.title} className="img-fluid" style={{ width: '100%' }}/>

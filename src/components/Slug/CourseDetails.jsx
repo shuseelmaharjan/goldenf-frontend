@@ -5,7 +5,7 @@ import unknown from '../assets/bg.jpeg'; // Import default image
 import { Link } from 'react-router-dom';
 import AppNavbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
-
+import './Slug.css';
 const CourseDetails = () => {
   const { slug } = useParams();
   const [course, setCourse] = useState(null);
@@ -25,10 +25,19 @@ const CourseDetails = () => {
     };
 
     fetchCourse();
+    window.scrollTo(0, 0); 
   }, [slug]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <AppNavbar/>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+          <h2>Loading...</h2>
+        </div>
+        <Footer/>
+      </>
+    );
   }
 
   if (error) {
@@ -68,8 +77,8 @@ const CourseDetails = () => {
         }}
       />
       <div className="container">
-        <div style={{ color: 'white', position: 'absolute', top: '20px', left: '20px', alignItems:'center' }}>
-          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Home</Link> / <Link to="/courses" style={{ color: 'white', textDecoration: 'none' }}>Courses</Link> / {course.title}
+      <div className='breadcrumb'>
+          <Link to="/">Home</Link> / <Link to="/courses">Courses</Link> / {course.title}
         </div>
       </div>
       <div className="container" style={{textAlign:'left'}}>

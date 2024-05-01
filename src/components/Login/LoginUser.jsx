@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './LoginUser.css';
 import logo from '../assets/goldenlogoblack.webp';
 import apiClient from '../apiClient';
+import { Link } from 'react-router-dom';
 
 const LoginUser = ({ setLoggedIn }) => {
   const navigate = useNavigate(); 
@@ -38,23 +39,27 @@ const LoginUser = ({ setLoggedIn }) => {
     e.preventDefault();
   
     try {
-      const response = await apiClient.post('/auth/api/login/', formData);
+      const response = await apiClient.post('/user-auth/login/', formData);
+  
       if (response.status === 200) {
         console.log('Login successful');
-        const { token, username } = response.data; 
+        const { token } = response.data;
         localStorage.setItem('token', token);
-        localStorage.setItem('username', username); 
-  
         setLoggedIn(true);
         navigate('/dashboard');
+      } else if (response.status === 401) {
+        setError('Invalid username or password');
+      } else if (response.status === 403) {
+        setError('User is inactive or not authorized');
       } else {
-        setError('Invalid credentials');
+        setError('Unexpected error occurred');
       }
     } catch (error) {
       console.error('Error validating credentials:', error);
       setError('Invalid credentials');
     }
   };
+  
   
   return (
     <div className="login">
@@ -104,6 +109,9 @@ const LoginUser = ({ setLoggedIn }) => {
           <button type="submit" color="primary" className="btn-login">
             Login
           </button>
+          <div className="row text-center py-3">
+            <Link to={'/'}>Back to Website</Link>
+          </div>
           {error && 
             <div className="alert alert-danger alert-dismissible fade show my-2 py-2 d-flex justify-content-between align-items-center" role="alert">
               <span className="error-message">{error}</span>

@@ -4,6 +4,7 @@ import AppNavbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 
 const OnlineApplication = () => {
+  window.scrollTo(0, 0); 
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',

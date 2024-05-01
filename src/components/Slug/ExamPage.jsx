@@ -11,8 +11,8 @@ const ExamPage = () => {
   const examSlug = location.pathname.split('/').pop();
   const [examId, setExamId] = useState('');
   const [setId, setSetId] = useState('');
-  const userId = localStorage.getItem('userId');
-  const username = localStorage.getItem('username');
+  const [userId, setUserId] = useState('');
+  const [username, setUsername] = useState('');
   const [examData, setExamData] = useState('');
   const [selectedButton, setSelectedButton] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +23,21 @@ const ExamPage = () => {
 
   const minutes = Math.floor((timeLeft % 3600) / 60);
   const seconds = timeLeft % 60;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await apiClient.get(`/user-auth/user/`);
+        setUserId(response.data.user_id);
+        setUsername(response.data.username);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+  
+    fetchUserData();
+  }, []); 
+  
 
   const fetchExamData = useCallback(async () => {
     try {
@@ -69,15 +84,18 @@ const ExamPage = () => {
   useEffect(() => {
     const fetchExamDetails = async () => {
       try {
+        if (userId) {
         const response = await apiClient.get(`/api/fetch-schedule-details/${examSlug}/`);
         setExamId(response.data.id);
         setSetId(response.data.set_id);
 
         const userResponse = await apiClient.get(`/api/check-exam-status/${userId}/${response.data.id}/`);
         setIsActive(userResponse.data.is_active);
+        }
       } catch (error) {
         console.error('Error fetching exam details:', error);
       }
+      
     };
 
     fetchExamDetails();

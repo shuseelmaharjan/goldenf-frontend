@@ -23,14 +23,14 @@ import AboutInstitute from './components/HomePage/AboutInstitute';
 import SyllabusDetails from './components/Slug/SyllabusDetails';
 import EventDetails from './components/Slug/EventDetails';
 import Downloads from './components/HomePage/Downloads';
+import LogOut from './components/Dashboard/LogOut';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
-    const userLoggedIn = localStorage.getItem('user') !== null;
-    setLoggedIn(userLoggedIn);
     setLoading(false); 
   }, []);
 
@@ -64,6 +64,7 @@ function App() {
           <Route path='/change-password' element={loggedIn ? <ChangePassword /> : <Navigate to="/login"/>}/>
           <Route path="/exam/:slug" element={loggedIn ? <ExamPage /> : <Navigate to="/login"/>} /> 
           <Route path="/exam/examhistory" element={loggedIn ? <ExamHistroy /> : <Navigate to="/login"/>} /> 
+          <Route path="/logout" element={<LogOut />} /> 
           <Route path="*" element={<NotFound />} /> 
         </Routes>
       </div>

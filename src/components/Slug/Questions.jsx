@@ -14,8 +14,10 @@ const Questions = ({ userId, examId, setId, selectedButton }) => {
   useEffect(() => {
     const fetchQuestionData = async () => {
       try {
-        const response = await apiClient.get(`/api/fetch-question/${setId}/${selectedButton}/`);
+        if (selectedButton) {
+          const response = await apiClient.get(`/api/fetch-question/${setId}/${selectedButton}/`);
         setQuestionData(response.data);
+        }
       } catch (error) {
         console.error('Error fetching question data:', error);
       }

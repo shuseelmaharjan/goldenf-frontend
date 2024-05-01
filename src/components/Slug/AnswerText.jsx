@@ -47,7 +47,6 @@ const AnswerText = ({ userId, examId, setId, selectedButton }) => {
   
   return (
     <div className="answer-wrapper">
-      Data: {answers} 
       {answerData ? (
         <div className="answer-content">
           {['a', 'b', 'c', 'd'].map((option, index) => (

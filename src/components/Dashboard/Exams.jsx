@@ -11,9 +11,20 @@ const Exams = () => {
   const [examExist, setExamExist] = useState({});
   const [modalShow, setModalShow] = useState(false);
   const [modalContent, setModalContent] = useState('');
-  const userId = localStorage.getItem('userId');
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await apiClient.get(`/user-auth/user/`);
+        setUserId(response.data.user_id);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserData();
+
     const fetchExamSchedules = async () => {
       try {
         const response = await apiClient.get('/api/ongoing-exam-schedules/');
@@ -31,6 +42,8 @@ const Exams = () => {
   useEffect(() => {
     const fetchExamExist = async () => {
       try {
+        if (userId) {
+
         await Promise.all(
           examSchedules.map(async (exam) => {
             const response = await apiClient.get(`/api/check-attempt-exam/${exam.id}/${userId}/`);
@@ -40,6 +53,7 @@ const Exams = () => {
             }));
           })
         );
+      }
       } catch (error) {
         console.error('Error fetching data', error);
       }

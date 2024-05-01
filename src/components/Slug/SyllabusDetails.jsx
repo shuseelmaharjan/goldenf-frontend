@@ -24,6 +24,7 @@ const SyllabusDetails = () => {
     };
 
     fetchSyllabus();
+    window.scrollTo(0, 0); 
   }, [slug]);
 
   useEffect(() => {
@@ -41,9 +42,13 @@ const SyllabusDetails = () => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <h2>Loading...</h2>
-      </div>
+      <>
+        <AppNavbar />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+          <h2>Loading...</h2>
+        </div>
+        <Footer />
+      </>
     );
   }
 
@@ -69,19 +74,19 @@ const SyllabusDetails = () => {
 
         <div className="row">
           <div className="col-lg-9">
-            <div className="row">
-            <h2 style={{ color: '#333', zIndex: 1 }}>{syllabus.coursetitle}</h2>
-            </div>
-          <div dangerouslySetInnerHTML={{ __html: syllabus.description }} S style={{ zIndex: 1 }} />
+            <h2 style={{ color: '#333' }}>{syllabus.coursetitle}</h2>
+            <div dangerouslySetInnerHTML={{ __html: syllabus.description }} />
           </div>
           <div className="col-lg-3">
-          {adData.map((item, index) => (
-                <div key={index} className="row mb-3">
+            <div className="row">
+              {adData.map((item, index) => (
+                <div key={index} className="col-md-6 mb-3">
                   <Link to={item.link}>
                     <img src={`${apiClient.defaults.baseURL}${item.image}`} alt={item.title} className="img-fluid" style={{ width: '100%' }}/>
                   </Link>
                 </div>
               ))}
+            </div>
           </div>
         </div>
       </div>

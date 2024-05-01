@@ -9,9 +9,22 @@ const ExamHistory = () => {
   const [attendedExams, setAttendedExams] = useState([]);
   const [examStatusList, setExamStatusList] = useState([]);
   const [examResultsList, setExamResultsList] = useState([]);
-  const userId = localStorage.getItem('userId');
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
+
+    const fetchUserData = async () => {
+      try {
+        const response = await apiClient.get(`/user-auth/user/`);
+        setUserId(response.data.user_id);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserData();
+
+
     const fetchExamStatus = async (examId) => {
       try {
         const response = await apiClient.get(`/api/exam/${examId}/status/`);
@@ -35,20 +48,23 @@ const ExamHistory = () => {
     };
     const fetchExamHistory = async () => {
       try {
-        const response = await apiClient.get(`/api/get-attended-exams/${userId}/`);
-        setAttendedExams(response.data.modals);
-        
-        const statusPromises = response.data.modals.map(exam => fetchExamStatus(exam.exam));
-        const statuses = await Promise.all(statusPromises);
-        setExamStatusList(statuses);
-
-        const resultsPromises = response.data.modals.map(exam => fetchExamResults(exam.exam, exam.set));
-        const results = await Promise.all(resultsPromises);
-        setExamResultsList(results);
+        if (userId) {
+          const response = await apiClient.get(`/api/get-attended-exams/${userId}/`);
+          setAttendedExams(response.data.modals);
+          
+          const statusPromises = response.data.modals.map(exam => fetchExamStatus(exam.exam));
+          const statuses = await Promise.all(statusPromises);
+          setExamStatusList(statuses);
+      
+          const resultsPromises = response.data.modals.map(exam => fetchExamResults(exam.exam, exam.set));
+          const results = await Promise.all(resultsPromises);
+          setExamResultsList(results);
+        }
       } catch (error) {
         console.error(error);
       }
-    };
+    };  
+     
 
     fetchExamHistory();
   }, [userId]); 

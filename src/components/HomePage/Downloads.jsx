@@ -9,6 +9,7 @@ const Downloads = () => {
     const [adData, setAdData] = useState([]);
     const [downloadData, setDownloadsFiles] = useState([]);
     const [showDescription, setShowDescription] = useState({});
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,12 +21,14 @@ const Downloads = () => {
                     initialShowDescriptionState[item.id] = false;
                 });
                 setShowDescription(initialShowDescriptionState);
+                setLoading(false); 
             } catch (error) {
                 console.error('Error fetching data', error);
             }
         };
 
         fetchData();
+        window.scrollTo(0, 0); 
     }, []);
 
     useEffect(() => {
@@ -52,6 +55,17 @@ const Downloads = () => {
         }));
     };
 
+    if (loading) {
+        return (
+          <>
+            <AppNavbar />
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+              <h2>Loading...</h2>
+            </div>
+            <Footer />
+          </>
+        );
+      }
     return (
         <>
             <AppNavbar />
@@ -89,38 +103,44 @@ const Downloads = () => {
                                         </div>
                                        
                                         {showDescription[download.id] && (
-    <div className="row mt-3 d-block">
-        {download.image ? (
-            <div className="col-auto">
-                <img src={download.image} alt="Download" style={{ width: '100%' }} onClick={() => window.open(download.image, '_blank')} />
-                <a href={download.image} download className="btn btn-primary">Download Image</a>
-            </div>
-        ) : null}
-        {download.file ? (
-            <div className="col-auto">
-                {/* Check the file extension and display appropriate button */}
-                {download.file.endsWith('.pdf') ? (
-                    <a href={download.file} target="_blank" rel="noopener noreferrer" className="btn btn-primary">Open PDF</a>
-                ) : download.file.endsWith('.doc') ? (
-                    <a href={download.file} download className="btn btn-primary">Download DOC</a>
-                ) : download.file.endsWith('.ppt') ? (
-                    <a href={download.file} download className="btn btn-primary">Download PPT</a>
-                ) : (
-                    <a href={download.file} download className="btn btn-primary">Download File</a>
-                )}
-            </div>
-        ) : null}
-        {download.link ? (
-            <div className="col-auto">
-                <a href={download.link} className="btn btn-primary" target="_blank" rel="noopener noreferrer">Download Link</a>
-            </div>
-        ) : null}
-        <div className="col mt-3">
-            <p dangerouslySetInnerHTML={{ __html: download.description }}></p>
-        </div>
-    </div>
-)}
-
+                                            <div className="row mt-3 d-block">
+                                                {download.image && (
+                                                    <div className="row mb-2 mt-2">
+                                                        <div className="col-auto">
+                                                            <img src={download.image} alt="Download" style={{ width: '100%' }} onClick={() => window.open(download.image, '_blank')} />
+                                                        </div>
+                                                        <div className="col-auto mt-3">
+                                                            <a href={download.image} download className="btn btn-primary">Download Image</a>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {download.file && (
+                                                    <div className="row mb-2 mt-2">
+                                                        <div className="col-auto">
+                                                            {download.file.endsWith('.pdf') ? (
+                                                                <a href={download.file} target="_blank" rel="noopener noreferrer" className="btn btn-primary">Open PDF</a>
+                                                            ) : download.file.endsWith('.doc') ? (
+                                                                <a href={download.file} download className="btn btn-primary">Download DOC</a>
+                                                            ) : download.file.endsWith('.ppt') ? (
+                                                                <a href={download.file} download className="btn btn-primary">Download PPT</a>
+                                                            ) : (
+                                                                <a href={download.file} download className="btn btn-primary">Download File</a>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {download.link && (
+                                                    <div className="row mb-2">
+                                                        <div className="col-auto">
+                                                            <a href={download.link} className="btn btn-primary" target="_blank" rel="noopener noreferrer">Download Link</a>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <div className="col mt-3">
+                                                    <p dangerouslySetInnerHTML={{ __html: download.description }}></p>
+                                                </div>
+                                            </div>
+                                        )}
 
 
 

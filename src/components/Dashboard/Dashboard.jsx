@@ -31,7 +31,7 @@ const Dashboard = () => {
 
     const fetchDashboardData = async () => {
       try {
-        const response1 = await apiClient.get(`api/count-modal-rows/${userId}/`);
+        const response1 = await apiClient.get(`/api/count-modal-rows/${userId}/`);
         setExamAttend(response1.data.modal_count);
 
         const response2 = await apiClient.get(`/api/count-user-courses/${userId}/`);

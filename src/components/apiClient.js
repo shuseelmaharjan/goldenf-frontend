@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://data.goldenfutureinstitute.com.np',
-  // baseURL: 'http://localhost:8000', 
+  // baseURL: 'https://data.goldenfutureinstitute.com.np/',
+  baseURL: 'http://localhost:8000', 
 });
 
 apiClient.interceptors.request.use(

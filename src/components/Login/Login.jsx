@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; 
+import apiClient from '../apiClient';
 
 const Login = () => {
   const [usernameInput, setUsernameInput] = useState('');
@@ -11,7 +11,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/user-auth/login/', {
+      const response = await apiClient.post('user-auth/login/', {
         username: usernameInput, 
         password: password
       });
@@ -34,8 +34,8 @@ const Login = () => {
           <input
             type="text"
             id="username"
-            value={usernameInput} // Use usernameInput here
-            onChange={(e) => setUsernameInput(e.target.value)} // Update setUsernameInput
+            value={usernameInput} 
+            onChange={(e) => setUsernameInput(e.target.value)} 
           />
         </div>
         <div>

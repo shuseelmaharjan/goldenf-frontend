@@ -1,0 +1,86 @@
+/* Ensure container and box have padding and border-radius for better UI */
+.container {
+    margin-top: 20px;
+    padding: 15px;
+  }
+  
+  .box {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* Define classes for correct, incorrect, and unanswered states */
+  .correct {
+    background-color: green;
+    color: white;
+  }
+  
+  .incorrect {
+    background-color: red;
+    color: white;
+  }
+  
+  .unanswered {
+    background-color: blue;
+    color: white;
+  }
+  
+  /* Ensure all images, text, and audio are responsive */
+  .img-responsive {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;  /* Set specific max-height */
+    width: auto;
+    display: block;     
+    margin: 0 auto;     /* Center the image */
+  }
+  
+  .audio-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .audio-wrapper audio {
+    width: 100%;
+  }
+  
+  /* Responsive design for different screen sizes */
+  @media (max-width: 768px) {
+    .box {
+      flex-direction: column;
+    }
+  
+    .col-md-6 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+  
+  /* Additional styles for margin and alignment */
+  .mt-3 {
+    margin-top: 1rem;
+  }
+  
+  .d-block div {
+    margin-bottom: 10px;
+  }
+  
+  .d-block .correct,
+  .d-block .incorrect,
+  .d-block .unanswered {
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .audio-wrapper.correct,
+  .audio-wrapper.incorrect,
+  .audio-wrapper.unanswered {
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  

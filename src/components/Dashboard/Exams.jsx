@@ -5,16 +5,20 @@ import Topbar from './Topbar';
 import apiClient from '../apiClient';
 import { Table, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import ExamData from './ExamData';
 
 const Exams = () => {
   const [examSchedules, setExamSchedules] = useState([]);
   const [examExist, setExamExist] = useState({});
   const [modalShow, setModalShow] = useState(false);
-  const [modalContent, setModalContent] = useState('');
+  const [modalContent, setModalContent] = useState({});
   const [userId, setUserId] = useState('');
+  const [selectedExamId, setSelectedExamId] = useState(null);
+  const [selectedSetId, setSelectedSetId] = useState(null);
 
+  console.log(modalContent);
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = async () => { 
       try {
         const response = await apiClient.get(`/user-auth/user/`);
         setUserId(response.data.user_id);
@@ -43,17 +47,16 @@ const Exams = () => {
     const fetchExamExist = async () => {
       try {
         if (userId) {
-
-        await Promise.all(
-          examSchedules.map(async (exam) => {
-            const response = await apiClient.get(`/api/check-attempt-exam/${exam.id}/${userId}/`);
-            setExamExist((prevState) => ({
-              ...prevState,
-              [exam.id]: response.data.exists,
-            }));
-          })
-        );
-      }
+          await Promise.all(
+            examSchedules.map(async (exam) => {
+              const response = await apiClient.get(`/api/check-attempt-exam/${exam.id}/${userId}/`);
+              setExamExist((prevState) => ({
+                ...prevState,
+                [exam.id]: response.data.exists,
+              }));
+            })
+          );
+        }
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -61,10 +64,6 @@ const Exams = () => {
     fetchExamExist();
   }, [examSchedules, userId]);
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
-    return new Date(dateString).toLocaleString('en-US', options);
-  };
 
   const handleJoinExam = async (examId, setId, True) => {
     try {
@@ -85,21 +84,23 @@ const Exams = () => {
         apiClient.get(`/api/validate_answer/${examId}/${setId}/${userId}/`),
         apiClient.get(`/api/modal-date/${userId}/${setId}/${examId}/`)
       ]);
-  
+
       setModalContent({
         validateResponse: validateResponse.data,
         modalDateResponse: modalDateResponse.data
-      }); 
-      setModalShow(true); 
+      });
+      setSelectedExamId(examId);
+      setSelectedSetId(setId);
+      setModalShow(true);
     } catch (error) {
       console.error('Error checking result:', error);
     }
   };
-  
-  const formatDates = (dateString) => {
+
+  const formatDate = (dateString) => {
     const date = new Date(dateString);
     const today = new Date();
-    
+
     if (date.toDateString() === today.toDateString()) {
       const options = { hour12: true, hour: 'numeric', minute: 'numeric' };
       const time = date.toLocaleTimeString('en-US', options);
@@ -109,6 +110,7 @@ const Exams = () => {
       return date.toLocaleDateString('en-US', options);
     }
   };
+
   return (
     <div className="main d-flex" style={{ width: '100%', height: '100vh' }}>
       <Sidebar />
@@ -121,7 +123,7 @@ const Exams = () => {
                 <h5>Exams</h5>
               </div>
               <div className="col-auto">
-                <Link className='btn btn-sm' to={'/exam/examhistory'}>View Histroy</Link>
+                <Link className='btn btn-sm' to={'/exam/examhistory'}>View History</Link>
               </div>
             </div>
             <div className="box px-2 py-2 mt-3">
@@ -159,32 +161,14 @@ const Exams = () => {
           </div>
         </div>
       </div>
-      <Modal show={modalShow} onHide={() => setModalShow(false)}>
+      <Modal show={modalShow} onHide={() => setModalShow(false)} size='xl'>
         <Modal.Header closeButton>
           <Modal.Title>Result</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <div className="row text-center">
-  <div className="col">
-    Total Correct Answers: {modalContent.validateResponse ? modalContent.validateResponse.total_true_count : ''}
-  </div>
-</div>
-<div className="row text-center">
-  <div className="col">
-    Total Incorrect Answers: {modalContent.validateResponse ? modalContent.validateResponse.total_false_count : ''}
-  </div>
-</div>
-<div className="row text-center">
-  <div className="col">
-    <h1>You Scored: {modalContent.validateResponse ? modalContent.validateResponse.total_true_count / 40 * 100 : ''}%</h1>
-  </div>
-</div>
-<div className="row d-flex justify-content-between">
-  <div className="col-auto">
-    <b>Ended:</b> {modalContent.modalDateResponse ? formatDates(modalContent.modalDateResponse.ended_date) : ''}
-  </div>
-</div>
-
+          {selectedExamId && selectedSetId && (
+            <ExamData userId={userId} setId={selectedSetId} examId={selectedExamId} />
+          )}
         </Modal.Body>
       </Modal>
     </div>

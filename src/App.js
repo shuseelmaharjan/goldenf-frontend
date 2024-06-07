@@ -24,6 +24,8 @@ import SyllabusDetails from './components/Slug/SyllabusDetails';
 import EventDetails from './components/Slug/EventDetails';
 import Downloads from './components/HomePage/Downloads';
 import LogOut from './components/Dashboard/LogOut';
+import CreateQuestions from './components/Dashboard/CreateQuestions';
+import ScheduleExam from './components/Dashboard/ScheduleExam';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -64,6 +66,8 @@ function App() {
           <Route path='/change-password' element={loggedIn ? <ChangePassword /> : <Navigate to="/login"/>}/>
           <Route path="/exam/:slug" element={loggedIn ? <ExamPage /> : <Navigate to="/login"/>} /> 
           <Route path="/exam/examhistory" element={loggedIn ? <ExamHistroy /> : <Navigate to="/login"/>} /> 
+          <Route path="/create-questions" element={loggedIn ? <CreateQuestions /> : <Navigate to="/login"/>} /> 
+          <Route path="/schedule-exam" element={loggedIn ? <ScheduleExam /> : <Navigate to="/login"/>} /> 
           <Route path="/logout" element={<LogOut />} /> 
           <Route path="*" element={<NotFound />} /> 
         </Routes>

@@ -18,7 +18,7 @@ const ExamPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [result, setResult] = useState('');
-  const [timeLeft, setTimeLeft] = useState(60*60);
+  const [timeLeft, setTimeLeft] = useState(60*50);
   const [nullCount, setNullCount] = useState('');
 
   const minutes = Math.floor((timeLeft % 3600) / 60);

@@ -4,8 +4,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-react": "^7.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fortawesome/fontawesome-free": "^6.5.2",
     "@iconscout/react-unicons": "^2.0.2",
     "@mui/material": "^5.15.15",
     "@testing-library/jest-dom": "^5.17.0",
@@ -27,6 +30,7 @@
     "react-responsive": "^10.0.0",
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.2",
+    "react-toastify": "^10.0.5",
     "slick-carousel": "^1.8.1",
     "slugify": "^1.6.6",
     "web-vitals": "^2.1.4"

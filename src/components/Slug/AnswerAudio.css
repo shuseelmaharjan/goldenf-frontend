@@ -1,0 +1,35 @@
+.answer-wrapper {
+    width: 100%;
+  }
+  
+  .answer-content .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .btn-answer {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .audio-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .play-pause-button {
+    margin-left: 10px;
+    background-color: #45B39D;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .play-pause-button:disabled {
+    background-color: #3e3e3e;
+    cursor: not-allowed;
+  }
+  
